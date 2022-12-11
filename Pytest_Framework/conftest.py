@@ -20,3 +20,28 @@ def set_up_tear_down_invalid(page) -> None:
     page.goto("/")
     yield page
 
+
+@pytest.fixture()
+def create_context_auth(playwright: Playwright) -> None:
+    browser = playwright.chromium.launch(headless=False, slow_mo=1500)
+    context = browser.new_context(
+        http_credentials={'username': 'admin', 'password': 'admin'},
+        viewport={"width": 2560, "height": 1440}
+    )
+    page = context.new_page()
+    page.goto("https://the-internet.herokuapp.com/basic_auth")
+    #page.set_viewport_size({"width": 2560, "height": 1440})
+    yield page
+
+
+@pytest.fixture()
+def create_context_digest_auth(playwright: Playwright) -> None:
+    browser = playwright.chromium.launch(headless=False, slow_mo=1500)
+    context = browser.new_context(
+        http_credentials={'username': 'admin', 'password': 'admin'},
+        viewport={"width": 2560, "height": 1440}
+    )
+    page = context.new_page()
+    page.goto("https://the-internet.herokuapp.com/digest_auth")
+    #page.set_viewport_size({"width": 2560, "height": 1440})
+    yield page
